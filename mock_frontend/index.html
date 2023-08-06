@@ -2,11 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script type="text/javascript" src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.0/socket.io.js"></script>
+    <script defer  src="index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    
+    <button id="sign-in">Sign In</button>
+    <button id="get-me">Get Me</button>
+    <button id="room-b">Join room b</button>
+    <button id="room-a"> Join room a</button>
+    <main>  
+
+        <section id="message-chain">
+
+        </section>
+        <form id="message-form">
+            <label for="message-bar">Type Your Message</label>
+            <input type="text" id="message-bar" name="message" />
+            <input type="submit" value="send" />
+        </form>
+    </main>
+   
 </body>
 </html>

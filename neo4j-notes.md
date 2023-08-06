@@ -7,3 +7,4 @@ const readRes = await session.executeRead(/* some query*/)
 const writeRes = await session.executeWrite(/* some query*/)
 session.close()
 ```
+
