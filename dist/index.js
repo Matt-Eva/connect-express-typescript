@@ -30,6 +30,7 @@ io.use((socket, next) => {
     sessionMiddleware(socket.request, {}, next);
 });
 io.on("connection", async (socket) => {
+    console.log(socket.request.session);
     const room = socket.handshake.query.room;
     if (room) {
         socket.join(room);
@@ -37,7 +38,9 @@ io.on("connection", async (socket) => {
             socket.to(room).emit("broadcast", arg);
         });
     }
-    socket.disconnect();
+    else {
+        socket.disconnect();
+    }
 });
 server.listen(4000, () => {
     console.log("Server running on port 4000");

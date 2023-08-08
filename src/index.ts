@@ -2,7 +2,7 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import neo, { ManagedTransaction } from "neo4j-driver";
 import { Server } from "socket.io";
 import cors from "cors";
-import session from "express-session";
+import session, { Session } from "express-session";
 import { createServer } from "http";
 import { create } from "domain";
 
@@ -11,11 +11,18 @@ type User = {
     name: string
 }
 
+declare module "http" {
+    interface IncomingMessage {
+        cookieHolder?: string,
+        session: Session
+    }
+}
+
 declare module "express-session" {
     interface SessionData {
-      user: User;
+        user: User;
     }
-  }
+}
 
 const {NEO_URL, NEO_USER, NEO_PASSWORD, SESSION_SECRET, FRONTEND_URL} = process.env
 console.log(FRONTEND_URL)
@@ -54,14 +61,16 @@ io.use((socket, next) =>{
 })
 
 io.on("connection", async (socket) =>{
+    console.log(socket.request.session)
     const room = socket.handshake.query.room
     if (room){
         socket.join(room)
         socket.on("message", (arg) =>{
             socket.to(room).emit("broadcast", arg)
         })
+    } else{
+        socket.disconnect()
     }
-    socket.disconnect()
 })
 
 server.listen(4000, () =>{
