@@ -1,13 +1,24 @@
 import express, { Express, Request, Response, NextFunction } from "express";
-import neo from "neo4j-driver";
+import neo, { ManagedTransaction } from "neo4j-driver";
 import { Server } from "socket.io";
 import cors from "cors";
 import session from "express-session";
 import { createServer } from "http";
 import { create } from "domain";
 
-const {NEO_URL, NEO_USER, NEO_PASSWORD, SESSION_SECRET, FRONTEND_URL} = process.env
+type User = {
+    born: object,
+    name: string
+}
 
+declare module "express-session" {
+    interface SessionData {
+      user: User;
+    }
+  }
+
+const {NEO_URL, NEO_USER, NEO_PASSWORD, SESSION_SECRET, FRONTEND_URL} = process.env
+console.log(FRONTEND_URL)
 const app = express();
 const server = createServer(app);
 
@@ -43,11 +54,43 @@ io.use((socket, next) =>{
 })
 
 io.on("connection", async (socket) =>{
-    socket.on("message", (arg) =>{
-        socket.broadcast.emit("broadcast", arg)
-    })
+    const room = socket.handshake.query.room
+    if (room){
+        socket.join(room)
+        socket.on("message", (arg) =>{
+            socket.to(room).emit("broadcast", arg)
+        })
+    }
+    socket.disconnect()
 })
 
 server.listen(4000, () =>{
     console.log("Server running on port 4000");
+})
+
+app.post('/login', async (req: Request, res) =>{
+    const session = driver.session()
+    try {
+        const query = 'MATCH (p:Person {name: $name}) RETURN p'
+        const transaction = async (tx: ManagedTransaction) =>{
+            return await tx.run(query, {name: req.body.name})
+        } 
+        const result = await session.executeRead(transaction)
+        const user = result.records[0].get(0).properties
+        if (user){
+            req.session.user = {
+                born: user.born,
+                name: user.name
+            }
+        }
+        console.log(req.session.id)
+        res.status(200).send(user)
+    } catch (error){
+        console.error(error)
+        res.status(500).send({error: error})
+    }
+})
+
+app.get("/me", (req, res) =>{
+    console.log(req.session.id)
 })
