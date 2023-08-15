@@ -7,22 +7,25 @@ import { createServer } from "http";
 import { create } from "domain";
 
 type User = {
-    born: object,
-    name: string
+    user: {
+        born: object,
+        name: string
+    }
 }
+
 
 declare module "http" {
     interface IncomingMessage {
         cookieHolder?: string,
-        session: Session
+        session: Session & User
     }
 }
 
-declare module "express-session" {
-    interface SessionData {
-        user: User;
-    }
-}
+// declare module "express-session" {
+//     interface SessionData {
+//         user: User;
+//     }
+// }
 
 const {NEO_URL, NEO_USER, NEO_PASSWORD, SESSION_SECRET, FRONTEND_URL} = process.env
 console.log(FRONTEND_URL)
