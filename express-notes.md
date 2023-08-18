@@ -2,23 +2,41 @@
 
 ## Endpoints
 
+
+**Users**
+
 post - signup
 
 post - login
 
 get - me
 
-get - my chats
+delete - remove account
+
+patch - update account
+
+**Chats**
+
+get - my chat
+
+post - new chat
+
+**Connections**
 
 get - my connections
-
-get - my chats
-
-get - chat messages
 
 get - search connections
 
 post - new connection
 
+delete - remove connection
+
+**Messages**
+
+get - chat messages
+
 post - new message
 
+delete - delete message (stretch)
+
+patch - edit message (stretch)
