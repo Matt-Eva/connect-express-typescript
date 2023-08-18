@@ -4,7 +4,9 @@ const messageChain = document.getElementById("message-chain")
 const roomB = document.getElementById("room-b")
 const roomA = document.getElementById("room-a")
 const signIn = document.getElementById("sign-in")
+const signOut = document.getElementById("sign-out")
 const getMe = document.getElementById("get-me")
+const disconnect = document.getElementById("disconnect")
 console.log(roomB)
 
 const connectSocket = (room) =>{
@@ -61,6 +63,10 @@ roomA.addEventListener("click", () =>{
 form.addEventListener("submit", (e) =>{
     e.preventDefault()
     socket.emit("message", e.target.message.value)
+})
+
+disconnect.addEventListener("click", () =>{
+    socket.disconnect()
 })
 
 // fetch("http://localhost:4000")

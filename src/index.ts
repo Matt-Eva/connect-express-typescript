@@ -13,19 +13,12 @@ type User = {
     }
 }
 
-
 declare module "http" {
     interface IncomingMessage {
         cookieHolder?: string,
         session: Session & User
     }
 }
-
-// declare module "express-session" {
-//     interface SessionData {
-//         user: User;
-//     }
-// }
 
 const {NEO_URL, NEO_USER, NEO_PASSWORD, SESSION_SECRET, FRONTEND_URL} = process.env
 console.log(FRONTEND_URL)
@@ -74,6 +67,9 @@ io.on("connection", async (socket) =>{
     } else{
         socket.disconnect()
     }
+    socket.on("disconnect", () =>{
+        console.log("disconnected")
+    })
 })
 
 server.listen(4000, () =>{

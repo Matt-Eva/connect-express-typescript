@@ -41,6 +41,9 @@ io.on("connection", async (socket) => {
     else {
         socket.disconnect();
     }
+    socket.on("disconnect", () => {
+        console.log("disconnected");
+    });
 });
 server.listen(4000, () => {
     console.log("Server running on port 4000");
