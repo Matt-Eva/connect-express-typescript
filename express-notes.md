@@ -17,7 +17,7 @@ patch - update account
 
 **Chats**
 
-get - my chat
+get - my chats
 
 post - new chat
 
