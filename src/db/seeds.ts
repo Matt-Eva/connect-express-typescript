@@ -6,3 +6,15 @@ const {NEO_URL, NEO_USER, NEO_PASSWORD, SESSION_SECRET, FRONTEND_URL} = process.
 const driver = neo.driver(
     NEO_URL, neo.auth.basic(NEO_USER, NEO_PASSWORD)
 );
+
+// User Seeds
+
+const user1 = {
+    
+}
+
+// Chat Seeds
+
+
+
+// Message Seeds
