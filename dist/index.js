@@ -48,6 +48,7 @@ io.on("connection", async (socket) => {
 server.listen(4000, () => {
     console.log("Server running on port 4000");
 });
+// ====== USER ROUTES ========
 app.post('/login', async (req, res) => {
     const session = driver.session();
     try {
@@ -73,5 +74,21 @@ app.post('/login', async (req, res) => {
 });
 app.get("/me", (req, res) => {
     console.log(req.session.id);
+});
+// =========== CHAT ROUTES ==========
+app.get("/my-chats", async (req, res) => {
+    if (req.session.user) {
+        const username = req.session.user.name;
+        const session = driver.session();
+        try {
+            const query = "MATCH (p:Person, {name: $name})-[:IN_CHAT]-(c:Chat) RETURN c";
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    else {
+        res.status(401).send({ message: "You are not logged in" });
+    }
 });
 //# sourceMappingURL=index.js.map
