@@ -1,3 +1,4 @@
+import { create } from "domain";
 import dotenv from "dotenv"
 import neo, { ManagedTransaction } from "neo4j-driver";
 import { v4 as uuid } from "uuid";
@@ -71,13 +72,41 @@ try {
 }
 
 
-
 // User Seeds
 
-const user1 = {
+const users = [
+  {
     id: uuid(),
     name: "Matt"
+  }, {
+    id: uuid(),
+    name: "CJ"
+  }, {
+    id: uuid(),
+    name: "Wills"
+  }, {
+    id: uuid(),
+    name: "Gehrig"
+  }
+]
+
+const createUser = async (user: {id: string, name: string}) =>{
+  try {
+    const addUser = "CREATE (u:User {id: $id, name: $name}) RETURN u"
+    let transaction = await session.beginTransaction()
+    const results = await transaction.run(addUser, user)
+    await transaction.close()
+    console.log(results)
+  } catch(e){
+    console.error(e)
+  }
 }
+
+for (const user of users) {
+  await createUser(user)
+}
+
+
 
 // Chat Seeds
 

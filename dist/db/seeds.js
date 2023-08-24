@@ -62,10 +62,36 @@ catch (error) {
     console.error(error);
 }
 // User Seeds
-const user1 = {
-    id: uuid(),
-    name: "Matt"
+const users = [
+    {
+        id: uuid(),
+        name: "Matt"
+    }, {
+        id: uuid(),
+        name: "CJ"
+    }, {
+        id: uuid(),
+        name: "Wills"
+    }, {
+        id: uuid(),
+        name: "Gehrig"
+    }
+];
+const createUser = async (user) => {
+    try {
+        const addUser = "CREATE (u:User {id: $id, name: $name}) RETURN u";
+        let transaction = await session.beginTransaction();
+        const results = await transaction.run(addUser, user);
+        await transaction.close();
+        console.log(results);
+    }
+    catch (e) {
+        console.error(e);
+    }
 };
+for (const user of users) {
+    await createUser(user);
+}
 // Chat Seeds
 // Message Seeds
 //# sourceMappingURL=seeds.js.map
