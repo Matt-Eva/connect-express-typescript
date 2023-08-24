@@ -8,3 +8,6 @@ const writeRes = await session.executeWrite(/* some query*/)
 session.close()
 ```
 
+# Documentation
+
+Cypher V5 Docs: https://neo4j.com/docs/cypher-manual/current/introduction/
