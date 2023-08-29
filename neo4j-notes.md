@@ -8,6 +8,10 @@ const writeRes = await session.executeWrite(/* some query*/)
 session.close()
 ```
 
+# Operations
+
+Note that we can't run create statements to our db instance when we have it open in the Auradb explorer.
+
 # Documentation
 
 Cypher V5 Docs: https://neo4j.com/docs/cypher-manual/current/introduction/
