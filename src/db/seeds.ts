@@ -175,18 +175,18 @@ const chat = {
 
 const createChats = async () => {
   try {
-    // const createChatWithUsers = `
-    //   MATCH (a:User), (b:User) 
-    //   WHERE a.name='Matt' AND b.name = 'Wills' 
-    //   CREATE (c:Chat {id: $id}), (a) - [m:IN_CHAT]->(c), (b) - [n:IN_CHAT] -> (c) 
-    //   RETURN c, m, n
-    // `
-    const createChatWithUsers = `CREATE (c:Chat {id: $id}) RETURN c`
+    const createChatWithUsers = `
+      MATCH (a:User), (b:User) 
+      WHERE a.name='Matt' AND b.name = 'Wills' 
+      CREATE (c:Chat {id: $id}), (a) - [m:IN_CHAT]->(c), (b) - [n:IN_CHAT] -> (c) 
+      RETURN c, m, n
+    `
+    // const createChatWithUsers = `CREATE (c:Chat {id: $id}) RETURN c`
     let transaction = await session.beginTransaction()
     const results = await transaction.run(createChatWithUsers, {id: 1})
     await transaction.commit()
     await transaction.close()
-    console.log("relationship results", results.records[0].get(0))
+    console.log("relationship results", results.records)
   } catch(e) {
     console.error(e)
   }
