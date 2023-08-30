@@ -1,3 +1,7 @@
+import handleNav from "./navigation.js";
+
+handleNav();
+
 let socket;
 const form = document.getElementById("message-form")
 const messageChain = document.getElementById("message-chain")
