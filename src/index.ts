@@ -80,19 +80,41 @@ server.listen(4000, () =>{
 app.post('/login', async (req: Request, res) =>{
     const session = driver.session()
     try {
-        const query = 'MATCH (u:User {name: $name}) RETURN u'
+        const query = 'MATCH (u:User {name: $name}) -[:IN_CHAT]-> (c:Chat) <-[IN_CHAT] -(p:User) RETURN u AS user, c.id AS chat, p.name AS participant'
         const transaction = async (tx: ManagedTransaction) =>{
             return await tx.run(query, {name: req.body.name})
         } 
         const result = await session.executeRead(transaction)
+        console.log(result.records)
         const user = result.records[0].get(0).properties
         if (user){
             req.session.user = {
                 name: user.name
             }
         }
-        console.log(req.session.id)
-        res.status(200).send(user)
+        interface ChatHash {
+            [index: string]: {
+                id: string,
+                participants: Array<string>
+            }
+        }
+        const chatHash: ChatHash = {}
+        for (const record of result.records){
+            const chatId: string = record.get("chat")
+            const participant: string = record.get("participant")
+            if (chatHash[chatId]){
+                const participants = [...chatHash[chatId].participants, participant] 
+                chatHash[chatId].participants = participants
+            } else {
+                chatHash[chatId] = {
+                    id: chatId,
+                    participants: [participant]
+                }
+            }
+            console.log(record.get("chat"))
+            console.log(record.get("participant"))
+        }
+        res.status(200).send(chatHash)
     } catch (error){
         console.error(error)
         res.status(500).send({error: error})

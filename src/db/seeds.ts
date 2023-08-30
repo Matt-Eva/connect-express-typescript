@@ -38,54 +38,7 @@ const deleteSeeds = async () =>{
   } catch (error){
     console.error(error)
   }
-
-  // try {   
-  //   console.log("deleting users")
-  //   const deleteUsers = "MATCH (u:User) DETACH DELETE u"
-  //   let transaction = await session.beginTransaction()
-  //   console.log("starting transaction")
-  //   await transaction.run(deleteUsers)
-  //   console.log("users deleted")
-  //   await transaction.close()
-  //   console.log("transaction closed")
-  // } catch (error){
-  //   console.error(error)
-  // }
   
-  // try {
-  //   console.log("deleting messages")
-  //   const deleteMessages = "MATCH (m:Message) DETACH DELETE m"
-  //   let transaction = await session.beginTransaction()
-  //   await transaction.run(deleteMessages)
-  //   await transaction.close()
-  //   console.log("messages deleted")
-  // } catch (error){
-  //   console.error(error)
-  // }
-  
-  // try {
-  //   console.log("deleting chats")
-  //   const deleteChats = "MATCH (c:Chat) DETACH DELETE c"
-  //   let transaction = await session.beginTransaction()
-  //   await transaction.run(deleteChats)
-  //   await transaction.close()
-  //   console.log("chats deleted")
-  // } catch (error){
-  //   console.error(error)
-  // }
-  
-  // // Verify Deletion
-  
-  // try {
-  //   console.log("verifying deletes")
-  //   const checkDeleted = "MATCH (n:Chat|Message|User) RETURN n"
-  //   let transaction = await session.beginTransaction()
-  //   const emptyResults = await transaction.run(checkDeleted)
-  //   await transaction.close()
-  //   console.log(emptyResults.records)
-  // } catch (error){
-  //   console.error(error)
-  // }
 }
 
 await deleteSeeds()
@@ -169,16 +122,21 @@ try {
 
 // Chat Seeds
 
-const chat = {
-  id: uuid()
-}
+const chats = [
+    {
+    id: uuid()
+  },
+  {
+    id: uuid()
+  },
+]
 
-const createChats = async () => {
+const createChats = async (chat: {id: string}) => {
   try {
     const createChatWithUsers = `
-      MATCH (a:User), (b:User) 
-      WHERE a.name='Matt' AND b.name = 'Wills' 
-      CREATE (c:Chat {id: $id}), (a) - [m:IN_CHAT]->(c), (b) - [n:IN_CHAT] -> (c) 
+      MATCH (a:User), (b:User), (d:User) 
+      WHERE a.name='Matt' AND b.name = 'Wills' AND d.name = 'CJ'
+      CREATE (c:Chat {id: $id}), (a) - [m:IN_CHAT]->(c), (b) - [n:IN_CHAT] -> (c),  (d) - [o:IN_CHAT] -> (c)
       RETURN c, m, n
     `
     // const createChatWithUsers = `CREATE (c:Chat {id: $id}) RETURN c`
@@ -192,7 +150,10 @@ const createChats = async () => {
   }
 }
 
-await createChats()
+for (const chat of chats) {
+  await createChats(chat)
+}
+
 console.log("first")
 
 
@@ -232,7 +193,7 @@ try {
     RETURN m, p
   `
   let transaction = await session.beginTransaction()
-  const results = await transaction.run(createMessageInChat, {id: chat.id, text: message.text})
+  const results = await transaction.run(createMessageInChat, {id: chats[0].id, text: message.text})
   await transaction.commit()
   await transaction.close()
   console.log("relationship results", results.records)

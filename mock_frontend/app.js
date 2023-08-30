@@ -2,6 +2,12 @@ import handleNav from "./navigation.js";
 
 handleNav();
 
+let user;
+
+const loadUserChats = async() => {
+    
+}
+
 const fetchUser = async () => {
     const response = await fetch("http://localhost:4000/login", {
         method: "POST",
@@ -10,10 +16,13 @@ const fetchUser = async () => {
         },
         body: JSON.stringify({name: "Wills"})
     })
-    const user = await response.json()
+    const result = await response.json()
+    user = result
     console.log(user)
 }
 fetchUser();
+
+
 
 
 
