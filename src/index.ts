@@ -8,7 +8,6 @@ import { create } from "domain";
 
 type User = {
     user: {
-        born: object,
         name: string
     }
 }
@@ -81,7 +80,7 @@ server.listen(4000, () =>{
 app.post('/login', async (req: Request, res) =>{
     const session = driver.session()
     try {
-        const query = 'MATCH (p:Person {name: $name}) RETURN p'
+        const query = 'MATCH (u:User {name: $name}) RETURN u'
         const transaction = async (tx: ManagedTransaction) =>{
             return await tx.run(query, {name: req.body.name})
         } 
@@ -89,7 +88,6 @@ app.post('/login', async (req: Request, res) =>{
         const user = result.records[0].get(0).properties
         if (user){
             req.session.user = {
-                born: user.born,
                 name: user.name
             }
         }
