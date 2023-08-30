@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    grid-template-rows: 50px calc(100vh - 50px);
+}
+
+header {
+    height: 50px;
+    display: flex;
+    display: fixed;
+    grid-row: 1;
+}
+
+main {
+    overflow: hidden;
+    height: calc(100vh - 50px);
+    grid-row: 2;
+}
+
+.page {
+    overflow: hidden;
+    height: calc(100vh - 50px);
+}
