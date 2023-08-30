@@ -2,10 +2,20 @@ import handleNav from "./navigation.js";
 
 handleNav();
 
-let user;
+const existingChats = document.getElementById("existing-chats")
 
-const loadUserChats = async() => {
-    
+let user;
+let userChats;
+
+const renderChats = (chats) => {
+    console.log(chats)
+    for (const key in chats) {
+        const p = document.createElement("p")
+        chats[key].participants.forEach(participant =>{
+            p.textContent += `${participant} `
+        })
+        existingChats.append(p)
+    }
 }
 
 const fetchUser = async () => {
@@ -17,8 +27,12 @@ const fetchUser = async () => {
         body: JSON.stringify({name: "Wills"})
     })
     const result = await response.json()
-    user = result
+    console.log(result)
+    user = result.user
+    userChats = result.chats
     console.log(user)
+    console.log(userChats)
+    renderChats(userChats)
 }
 fetchUser();
 

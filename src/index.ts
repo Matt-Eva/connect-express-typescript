@@ -114,7 +114,7 @@ app.post('/login', async (req: Request, res) =>{
             console.log(record.get("chat"))
             console.log(record.get("participant"))
         }
-        res.status(200).send(chatHash)
+        res.status(200).send({user: user, chats: chatHash})
     } catch (error){
         console.error(error)
         res.status(500).send({error: error})
