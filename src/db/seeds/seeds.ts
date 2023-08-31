@@ -1,6 +1,6 @@
 import { driver, Driver, closeDriver } from "./seedConfig.js"
 import deleteSeeds from "./deleteSeeds.js"
-import createUsers from "./userSeeds.js"
+import createUsers from "./userNodeSeeds.js"
 
 
 try {
@@ -12,48 +12,8 @@ try {
 
 const seed =  async (driver: Driver) =>{
   await deleteSeeds(driver)
-  await createUsers(driver)
+  const users = await createUsers(driver)
   await closeDriver()
-}
-
-const testCreate = async() =>{
-  try {
-      const addUser = "CREATE (u:User) RETURN u"
-      let transaction = await session.beginTransaction()
-      const results = await transaction.run(addUser)
-      await transaction.commit()
-      await transaction.close()
-      // console.log(results.records)
-    } catch(e){
-      console.error(e)
-    }
-}
-
-const checkCreate = async () =>{
-  try {
-    const checkUser = "MATCH (u:User) RETURN u"
-    let transaction = await session.beginTransaction()
-    const results = await transaction.run(checkUser)
-    await transaction.commit()
-    await transaction.close()
-    // console.log(results.records)
-  } catch(e){
-    console.error(e)
-  }
-}
-
-await testCreate()
-await checkCreate()
-
-try {
-  const checkUsers = "MATCH (u:User) RETURN u"
-  let transaction = await session.beginTransaction()
-  const results = await transaction.run(checkUsers)
-  await transaction.commit()
-  await transaction.close()
-  console.log("created users", results.records)
-} catch(error) {
-  console.error(error)
 }
 
 
@@ -61,11 +21,17 @@ try {
 // Chat Seeds
 
 const chats = [
-    {
-    id: uuid()
+  {
+    id: uuid(), 
+    names: [
+
+    ]
   },
   {
-    id: uuid()
+    id: uuid(),
+    names: [
+      
+    ]
   },
 ]
 
