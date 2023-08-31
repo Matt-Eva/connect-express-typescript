@@ -4,8 +4,6 @@ import { v4 as uuid } from "uuid";
 dotenv.config();
 const { NEO_URL, NEO_USER, NEO_PASSWORD } = process.env;
 const driver = neo.driver(NEO_URL, neo.auth.basic(NEO_USER, NEO_PASSWORD));
-// console.log(uuid())
-// Delete Seeds
 try {
     await driver.verifyConnectivity();
     console.log("connected");
@@ -59,38 +57,6 @@ const checkCreate = async () => {
 };
 await testCreate();
 await checkCreate();
-// User Seeds
-const users = [
-    {
-        id: uuid(),
-        name: "Matt"
-    }, {
-        id: uuid(),
-        name: "CJ"
-    }, {
-        id: uuid(),
-        name: "Wills"
-    }, {
-        id: uuid(),
-        name: "Gehrig"
-    }
-];
-const createUser = async (user) => {
-    try {
-        const addUser = "CREATE (u:User {id: $id, name: $name}) RETURN u";
-        let transaction = await session.beginTransaction();
-        const results = await transaction.run(addUser, user);
-        await transaction.commit();
-        await transaction.close();
-        // console.log(results.records)
-    }
-    catch (e) {
-        console.error(e);
-    }
-};
-for (const user of users) {
-    await createUser(user);
-}
 try {
     const checkUsers = "MATCH (u:User) RETURN u";
     let transaction = await session.beginTransaction();

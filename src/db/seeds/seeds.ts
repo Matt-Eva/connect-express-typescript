@@ -1,18 +1,7 @@
-import { create } from "domain";
-import dotenv from "dotenv"
-import neo, { ManagedTransaction } from "neo4j-driver";
-import { v4 as uuid } from "uuid";
+import { driver, Driver, closeDriver } from "./seedConfig.js"
+import deleteSeeds from "./deleteSeeds.js"
+import createUsers from "./userSeeds.js"
 
-dotenv.config()
-
-const {NEO_URL, NEO_USER, NEO_PASSWORD} = process.env
-
-const driver = neo.driver(
-    NEO_URL, neo.auth.basic(NEO_USER, NEO_PASSWORD)
-);
-// console.log(uuid())
-
-// Delete Seeds
 
 try {
   await driver.verifyConnectivity()
@@ -21,27 +10,11 @@ try {
   console.log(`-- Connection error --\n${err}\n-- Cause --\n${err}`)
 }
 
-const session = driver.session()
-
-const deleteSeeds = async () =>{
-
-  try {   
-    console.log("deleting nodes")
-    const deleteNodes = "MATCH (n) DETACH DELETE n"
-    let transaction = await session.beginTransaction()
-    console.log("starting transaction")
-    const result = await transaction.run(deleteNodes)
-    await transaction.commit()
-    console.log(result)
-    await transaction.close()
-    console.log("transaction closed")
-  } catch (error){
-    console.error(error)
-  }
-  
+const seed =  async (driver: Driver) =>{
+  await deleteSeeds(driver)
+  await createUsers(driver)
+  await closeDriver()
 }
-
-await deleteSeeds()
 
 const testCreate = async() =>{
   try {
@@ -71,41 +44,6 @@ const checkCreate = async () =>{
 
 await testCreate()
 await checkCreate()
-
-// User Seeds
-
-const users = [
-  {
-    id: uuid(),
-    name: "Matt"
-  }, {
-    id: uuid(),
-    name: "CJ"
-  }, {
-    id: uuid(),
-    name: "Wills"
-  }, {
-    id: uuid(),
-    name: "Gehrig"
-  }
-]
-
-const createUser = async (user: {id: string, name: string}) =>{
-  try {
-    const addUser = "CREATE (u:User {id: $id, name: $name}) RETURN u"
-    let transaction = await session.beginTransaction()
-    const results = await transaction.run(addUser, user)
-    await transaction.commit()
-    await transaction.close()
-    // console.log(results.records)
-  } catch(e){
-    console.error(e)
-  }
-}
-
-for (const user of users) {
-  await createUser(user)
-}
 
 try {
   const checkUsers = "MATCH (u:User) RETURN u"
