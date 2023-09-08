@@ -1,7 +1,6 @@
 // This file contains functions that seed Chat nodes
 import { Driver, Session, uuid} from "../seedConfig.js"
 
-
 interface Chat {
     id: string
 }

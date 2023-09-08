@@ -3,6 +3,7 @@ import deleteSeeds from "./deleteSeeds.js";
 import createUsers from "./node_seeds/userNodeSeeds.js";
 import createChats from "./node_seeds/chatNodeSeeds.js";
 import createMessages from "./node_seeds/messageNodeSeeds.js";
+import createConnectedRelationships from "./relationship_seeds/connectedRelSeeds.js";
 try {
     await driver.verifyConnectivity();
     console.log("connected");
@@ -16,7 +17,10 @@ const seed = async (driver) => {
     await closeDriver();
     const chats = await createChats(driver);
     const messages = await createMessages(driver);
+    await createConnectedRelationships(driver, users);
+    await closeDriver();
 };
+seed(driver);
 // Chat Seeds
 // try {
 //   const checkChat = `MATCH (c:Chat) RETURN c`
