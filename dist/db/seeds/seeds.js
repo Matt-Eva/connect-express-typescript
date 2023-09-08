@@ -1,8 +1,8 @@
 import { driver, closeDriver } from "./seedConfig.js";
 import deleteSeeds from "./deleteSeeds.js";
-import createUsers from "./userNodeSeeds.js";
-import createChats from "./chatNodeSeeds.js";
-import createMessages from "./messageNodeSeeds.js";
+import createUsers from "./node_seeds/userNodeSeeds.js";
+import createChats from "./node_seeds/chatNodeSeeds.js";
+import createMessages from "./node_seeds/messageNodeSeeds.js";
 try {
     await driver.verifyConnectivity();
     console.log("connected");

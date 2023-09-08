@@ -1,5 +1,5 @@
 // This file contains functions that seed Chat nodes
-import { uuid } from "./seedConfig.js";
+import { uuid } from "../seedConfig.js";
 const createChat = async (session, chat) => {
     try {
         // const createChatWithUsers = `

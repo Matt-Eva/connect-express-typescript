@@ -1,4 +1,4 @@
-import { uuid } from "./seedConfig.js";
+import { uuid } from "../seedConfig.js";
 import { faker } from "@faker-js/faker";
 const createMessage = async (session, message) => {
     try {

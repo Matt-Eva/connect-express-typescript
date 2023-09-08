@@ -1,4 +1,4 @@
-import { Driver, ManagedTransaction, Session, uuid } from "./seedConfig.js"
+import { Driver, ManagedTransaction, Session, uuid } from "../seedConfig.js"
 
 export interface User {
   id: string,

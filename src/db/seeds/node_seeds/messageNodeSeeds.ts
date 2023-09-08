@@ -1,4 +1,4 @@
-import { Driver, Session, uuid} from "./seedConfig.js"
+import { Driver, Session, uuid} from "../seedConfig.js"
 import { faker } from "@faker-js/faker"
 
 interface Message {

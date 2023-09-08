@@ -1,4 +1,4 @@
-import { uuid } from "./seedConfig.js";
+import { uuid } from "../seedConfig.js";
 const createUser = async (user, session) => {
     try {
         const addUser = "CREATE (u:User {id: $id, name: $name}) RETURN u";
