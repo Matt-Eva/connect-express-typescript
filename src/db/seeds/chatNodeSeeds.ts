@@ -1,9 +1,8 @@
 // This file contains functions that seed Chat nodes
-import { create } from "domain"
 import { Driver, Session, uuid} from "./seedConfig.js"
-import {User} from "./userNodeSeeds.js"
 
-type Chat = {
+
+interface Chat {
     id: string
 }
   
@@ -30,11 +29,12 @@ const createChat = async (session: Session, chat: Chat)  => {
 const createChats = async (driver: Driver) =>{
     const chats: Array<Chat>  = []
     const session = driver.session()
-    for (let i = 0; i < 8; i++){
+    for (let i = 0; i < 7; i++){
         const chat = {id: uuid()}
         createChat(session, chat)
         chats.push(chat)
     }
+    await session.close()
     return chats;
 }
 

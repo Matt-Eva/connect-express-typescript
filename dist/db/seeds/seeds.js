@@ -2,6 +2,7 @@ import { driver, closeDriver } from "./seedConfig.js";
 import deleteSeeds from "./deleteSeeds.js";
 import createUsers from "./userNodeSeeds.js";
 import createChats from "./chatNodeSeeds.js";
+import createMessages from "./messageNodeSeeds.js";
 try {
     await driver.verifyConnectivity();
     console.log("connected");
@@ -13,7 +14,8 @@ const seed = async (driver) => {
     await deleteSeeds(driver);
     const users = await createUsers(driver);
     await closeDriver();
-    await createChats(driver, users);
+    const chats = await createChats(driver);
+    const messages = await createMessages(driver);
 };
 // Chat Seeds
 // try {

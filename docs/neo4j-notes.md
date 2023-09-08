@@ -29,3 +29,13 @@ And 4 Relationship types
 2. User - Chat: PARTICIPATING_IN_CHAT
 3. User - Message: SENT
 4. Message - Chat: SENT_IN_CHAT
+
+# Seeding
+
+Currently seeding 7 users.
+
+Want each user to be in 3 chats.
+
+Seed 7 chats.
+
+First user will be in first chats 1-3, second will be in 2-4, etc. Starts to wrap around at the end. Same number of chats as users.

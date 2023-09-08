@@ -2,6 +2,7 @@ import { driver, Driver, closeDriver } from "./seedConfig.js"
 import deleteSeeds from "./deleteSeeds.js"
 import createUsers from "./userNodeSeeds.js"
 import createChats from "./chatNodeSeeds.js"
+import createMessages from "./messageNodeSeeds.js"
 
 
 try {
@@ -16,6 +17,7 @@ const seed =  async (driver: Driver) =>{
   const users = await createUsers(driver)
   await closeDriver()
   const chats = await createChats(driver)
+  const messages = await createMessages(driver)
 }
 
 

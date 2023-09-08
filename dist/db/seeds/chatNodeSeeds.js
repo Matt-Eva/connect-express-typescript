@@ -1,13 +1,14 @@
+// This file contains functions that seed Chat nodes
 import { uuid } from "./seedConfig.js";
-const createChat = async (chat, users, session) => {
+const createChat = async (session, chat) => {
     try {
-        const createChatWithUsers = `
-        MATCH (a:User), (b:User), (d:User) 
-        WHERE a.name='Matt' AND b.name = 'Wills' AND d.name = 'CJ'
-        CREATE (c:Chat {id: $id}), (a) - [m:IN_CHAT]->(c), (b) - [n:IN_CHAT] -> (c),  (d) - [o:IN_CHAT] -> (c)
-        RETURN c, m, n
-        `;
-        // const createChatWithUsers = `CREATE (c:Chat {id: $id}) RETURN c`
+        // const createChatWithUsers = `
+        // MATCH (a:User), (b:User), (d:User) 
+        // WHERE a.name='Matt' AND b.name = 'Wills' AND d.name = 'CJ'
+        // CREATE (c:Chat {id: $id}), (a) - [m:PARTICIPATING_IN_CHAT]->(c), (b) - [n:PARTICIPATING_IN_CHAT] -> (c),  (d) - [o:PARTICIPATING_IN_CHAT] -> (c)
+        // RETURN c, m, n
+        // `
+        const createChatWithUsers = `CREATE (c:Chat {id: $id}) RETURN c`;
         let transaction = await session.beginTransaction();
         const results = await transaction.run(createChatWithUsers, chat);
         await transaction.commit();
@@ -18,19 +19,16 @@ const createChat = async (chat, users, session) => {
         console.error(e);
     }
 };
-const createChats = async (driver, users) => {
-    const chats = [
-        {
-            id: uuid(),
-            names: []
-        },
-        {
-            id: uuid(),
-            names: []
-        },
-    ];
-    for (let i = 0; i < users.length; i++) {
+const createChats = async (driver) => {
+    const chats = [];
+    const session = driver.session();
+    for (let i = 0; i < 7; i++) {
+        const chat = { id: uuid() };
+        createChat(session, chat);
+        chats.push(chat);
     }
+    await session.close();
+    return chats;
 };
 export default createChats;
 //# sourceMappingURL=chatNodeSeeds.js.map
