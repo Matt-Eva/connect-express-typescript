@@ -18,7 +18,7 @@ const createChat = async (session: Session, chat: Chat)  => {
         const results = await transaction.run(createChatWithUsers, chat)
         await transaction.commit()
         await transaction.close()
-        console.log("relationship results", results.records)
+        console.log("created Chats", results.records)
     } catch(e) {
         console.error(e)
     }
@@ -30,7 +30,7 @@ const createChats = async (driver: Driver) =>{
     const session = driver.session()
     for (let i = 0; i < 7; i++){
         const chat = {id: uuid()}
-        createChat(session, chat)
+        await createChat(session, chat)
         chats.push(chat)
     }
     await session.close()

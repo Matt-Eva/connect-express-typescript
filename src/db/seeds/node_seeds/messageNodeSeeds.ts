@@ -9,8 +9,7 @@ interface Message {
 const createMessage = async (session: Session, message: Message) =>{
     try {
     const createMessageInChat = `
-        MATCH (c:Chat {id: $id})
-        CREATE (m:Message {text: $text, id: $id})
+        CREATE (m:Message {text: $text, id: $id}) RETURN m
     `
     let transaction = await session.beginTransaction()
     const results = await transaction.run(createMessageInChat, message)

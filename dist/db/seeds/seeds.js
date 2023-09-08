@@ -14,7 +14,6 @@ catch (err) {
 const seed = async (driver) => {
     await deleteSeeds(driver);
     const users = await createUsers(driver);
-    await closeDriver();
     const chats = await createChats(driver);
     const messages = await createMessages(driver);
     await createConnectedRelationships(driver, users);

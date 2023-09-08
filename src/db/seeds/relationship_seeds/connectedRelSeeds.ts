@@ -6,7 +6,7 @@ const createConnected = async (session: Session, firstUser: User, secondUser: Us
         const query = `
             MATCH (a:User), (b:User)
             WHERE a.name = $firstName AND b.name = $secondName
-            CREATE a - [r:CONNECTED] -> b
+            CREATE (a) - [r:CONNECTED] -> (b)
             RETURN r
         `
         const result = await session.executeWrite(async (tx: ManagedTransaction) =>{

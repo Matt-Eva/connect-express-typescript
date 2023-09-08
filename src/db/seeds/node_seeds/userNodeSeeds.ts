@@ -12,7 +12,7 @@ const createUser = async (user: {id: string, name: string}, session: Session) =>
       const results = await transaction.run(addUser, user)
       await transaction.commit()
       await transaction.close()
-      // console.log(results.records)
+      console.log("Created Users", results.records)
     } catch(e){
       console.error(e)
     }
