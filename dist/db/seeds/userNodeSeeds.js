@@ -1,4 +1,4 @@
-import { driver, uuid } from "./seedConfig.js";
+import { uuid } from "./seedConfig.js";
 const createUser = async (user, session) => {
     try {
         const addUser = "CREATE (u:User {id: $id, name: $name}) RETURN u";
@@ -12,7 +12,7 @@ const createUser = async (user, session) => {
         console.error(e);
     }
 };
-const createUsers = async () => {
+const createUsers = async (driver) => {
     const session = driver.session();
     const users = [
         {
@@ -32,6 +32,23 @@ const createUsers = async () => {
     for (const user of users) {
         await createUser(user, session);
     }
+    await session.close();
+    return users;
+};
+const checkUsers = async (driver) => {
+    const session = driver.session();
+    try {
+        const checkUsers = "MATCH (u:User) RETURN u";
+        let transaction = await session.beginTransaction();
+        const results = await transaction.run(checkUsers);
+        await transaction.commit();
+        await transaction.close();
+        console.log("created users", results.records);
+    }
+    catch (error) {
+        console.error(error);
+    }
     session.close();
 };
-//# sourceMappingURL=userSeeds.js.map
+export default createUsers;
+//# sourceMappingURL=userNodeSeeds.js.map

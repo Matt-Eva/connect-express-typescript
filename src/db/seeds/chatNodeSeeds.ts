@@ -23,9 +23,25 @@ const createChat = async (chat: Chat, users: Array<User>, session: Session) => {
     } catch(e) {
         console.error(e)
     }
+    
 }
 
 const createChats = async (driver: Driver, users: Array<User>) =>{
+    const chats = [
+        {
+          id: uuid(), 
+          names: [
+      
+          ]
+        },
+        {
+          id: uuid(),
+          names: [
+            
+          ]
+        },
+    ]
+
     for (let i = 0; i < users.length ; i++){
         
     }
