@@ -24,15 +24,30 @@ const createUsers = async (driver: Driver) =>{
         {
         id: uuid(),
         name: "Matt"
-        }, {
+        }, 
+        {
         id: uuid(),
         name: "CJ"
-        }, {
+        }, 
+        {
         id: uuid(),
         name: "Wills"
-        }, {
+        }, 
+        {
         id: uuid(),
-        name: "Gehrig"
+        name: "Tom"
+        }, 
+        {
+          id: uuid(),
+          name: "Nick"
+        }, 
+        {
+          id: uuid(),
+          name: "Jay"
+        }, 
+        {
+          id: uuid(),
+          name: "Mustafa"
         }
     ]
     for (const user of users) {
@@ -42,19 +57,6 @@ const createUsers = async (driver: Driver) =>{
     return users
 }
 
-const checkUsers = async (driver: Driver) =>{
-  const session = driver.session()
-  try {
-    const checkUsers = "MATCH (u:User) RETURN u"
-    let transaction = await session.beginTransaction()
-    const results = await transaction.run(checkUsers)
-    await transaction.commit()
-    await transaction.close()
-    console.log("created users", results.records)
-  } catch(error) {
-    console.error(error)
-  }
-  session.close()
-}
+
 
 export default createUsers;

@@ -15,7 +15,7 @@ const seed =  async (driver: Driver) =>{
   await deleteSeeds(driver)
   const users = await createUsers(driver)
   await closeDriver()
-  await createChats(driver, users)
+  const chats = await createChats(driver)
 }
 
 
